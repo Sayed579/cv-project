@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Category Prediction</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9; /* لون خلفية */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            background-color: #ffffff; /* لون خلفية الحاوية */
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50; /* لون العناوين */
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            color: #555;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+            background-color: #f9f9f9; /* لون خلفية زر الاختيار */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            width: 80%;
+        }
+
+        input[type="file"]:hover {
+            background-color: #e6e6e6; /* لون عند التحويم */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="submit"] {
+            padding: 12px 24px;
+            background-color: #2980b9; /* لون خلفية زر الإرسال */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            width: 80%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #21618c; /* لون عند التحويم */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .message {
+            color: #e74c3c; /* لون الرسائل */
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .result {
+            background-color: #ecf0f1; /* لون خلفية نتائج التحليل */
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            padding: 0;
+            list-style-type: none;
+        }
+
+        li {
+            background-color: #ffffff;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>CV Analyser using Ml</h1>
+        <p>"This system allows for the categorization of resumes and job recommendations using TXT and PDF files."</p>
+
+        <h2>Upload Your Resume</h2>
+        <form action="/pred" method="post" enctype="multipart/form-data">
+            <input type="file" name="resume" accept=".pdf, .txt" required>
+            <input type="submit" value="Submit">
+        </form>
+
+        {% if message %}
+        <p class="message">{{message}}</p>
+        {% endif %}
+
+        {% if predicted_category %}
+        <div class="result">
+            <p><strong>Category:</strong> {{predicted_category}}</p>
+            <p><strong>Recommended Job:</strong> {{recommended_job}}</p>
+            <p><strong>Name:</strong> {{name}}</p>
+            <p><strong>Phone No:</strong> {{phone}}</p>
+            <p><strong>Email:</strong> {{email}}</p>
+            {% if extracted_skills %}
+            <p><strong>Skills:</strong></p>
+            <ul>
+                {% for skill in extracted_skills %}
+                <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No skills found.</p>
+            {% endif %}
+            {% if extracted_education %}
+            <p><strong>Education:</strong></p>
+            <ul>
+                {% for edu in extracted_education %}
+                <li>{{ edu }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No education found.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
